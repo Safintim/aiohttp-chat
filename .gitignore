@@ -1,0 +1,20 @@
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+.venv
+.idea
+.pytest_cache/
+.vscode
+db.sqlite3
+*.yml
+*.yaml
