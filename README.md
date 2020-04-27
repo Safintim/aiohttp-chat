@@ -4,12 +4,6 @@
 
 [websockets для чата](https://github.com/Safintim/django-api-chat)
 
-### Возможности
-- Диалог
-- Групповой чат
-- Сообщение прочитано/не прочитано
-
-
 ### Установка
 
 ```shell script
