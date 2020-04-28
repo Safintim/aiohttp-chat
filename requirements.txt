@@ -1,8 +1,7 @@
 psycopg2==2.8.4
+psycopg2-binary==2.8.4
 aiohttp==3.6.2
 aiopg==1.0.0
-psycopg2-binary==2.8.4
-pyfcm==1.4.7
 pytest==5.3.5
 pytest-aiohttp==0.3.0
 PyYAML==5.3

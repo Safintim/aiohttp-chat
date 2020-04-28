@@ -1,4 +1,11 @@
-from chat import events, messages, serializers, services
+from chat import (
+    events,
+    messages,
+    notifications,
+    serializers,
+    services,
+    settings,
+)
 
 
 async def send_message(conn, wss, chat, user, text):
@@ -14,3 +21,10 @@ async def send_message(conn, wss, chat, user, text):
         participant.user_id
         for participant in participants
     ]
+
+    if settings.ENABLE_NOTIFICATION:
+        notifications.push_message(
+            participant_ids,
+            chatId=chat.id,
+            **message_data,
+        )
