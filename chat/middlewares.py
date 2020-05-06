@@ -24,8 +24,8 @@ def setup_middlewares(app):
         )
 
     app.middlewares.extend([
-        chat_auth_middleware(exclude_routes=('/ws/hi/', r'/ws/fights/\d*')),
         auth_middleware,
+        chat_auth_middleware(exclude_routes=('/ws/hi/', r'/ws/fights/\d*')),
     ])
 
 
