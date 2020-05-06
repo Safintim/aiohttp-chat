@@ -1,6 +1,6 @@
 FROM python:3.7-alpine
 
-RUN apk add gcc musl-dev python3-dev libffi-dev linux-headers  postgresql-dev && rm -rf /var/cache/apk/*
+RUN apk add gcc musl-dev linux-headers postgresql-dev busybox-extras && rm -rf /var/cache/apk/*
 
 WORKDIR /usr/src/app
 
