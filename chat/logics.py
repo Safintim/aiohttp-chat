@@ -23,7 +23,7 @@ async def send_message(conn, wss, chat, user, text):
     ]
 
     if settings.ENABLE_NOTIFICATION:
-        notifications.push_message(
+        await notifications.push_message(
             participant_ids,
             chatId=chat.id,
             **message_data,
