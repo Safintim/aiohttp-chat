@@ -1,17 +1,8 @@
 import os
 import pathlib
 
-# import yaml
 
 BASE_DIR = pathlib.Path(__file__).parent
-# config_path = BASE_DIR / 'config' / 'app.yaml'
-
-
-# def get_config(path):
-#     with open(path) as yamlfile:
-#         return yaml.safe_load(yamlfile)
-#
-# config = get_config(config_path)
 
 config = {
     'postgres': {
