@@ -1,9 +1,9 @@
 from chat import services, settings
 
 
-def serialize_chat_message(conn, msg):
-    relative_path = services.get_file(conn, msg.file_id)
-    file_url = f'{settings.HOST}{relative_path}'
+async def serialize_chat_message(conn, msg):
+    media = await services.get_file(conn, msg.file_id)
+    file_url = f'{settings.HOST}{media.file}'
     return {
         'id': msg.id,
         'kind': msg.kind,

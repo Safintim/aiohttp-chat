@@ -50,6 +50,7 @@ async def handle_chat(request):
             if events.is_creation_msg_event(msg_data['event']):
                 await logics.send_message(
                     conn=conn,
+                    ws_current=ws_current,
                     wss=wss,
                     chat=chat,
                     user=user,

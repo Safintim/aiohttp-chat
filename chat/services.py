@@ -53,6 +53,28 @@ async def get_file(conn, file_id):
     return await file_records.fetchone()
 
 
+async def get_messages(conn, chat_id):
+    message_records = await conn.execute(
+        db.message.select().
+        where(db.message.c.chat_id == chat_id),
+    )
+    return await message_records.fetchall()
+
+
+async def get_message_by_file_id(conn, file_id):
+    message_records = await conn.execute(
+        db.message.select().
+        where(db.message.c.file_id == file_id),
+    )
+    return await message_records.fetchone()
+
+
+async def can_use_file(conn, file_id):
+    is_exist_file = await get_file(conn, file_id)
+    is_exist_message_with_file = await get_message_by_file_id(conn, file_id)
+    return not is_exist_file or is_exist_message_with_file
+
+
 async def create_message(conn, chat_id, user_id, kind, text=None, file_id=None):
     msg_records = await conn.execute(
         db.message.insert().

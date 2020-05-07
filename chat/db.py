@@ -13,7 +13,6 @@ from sqlalchemy import (
     Table,
     Text,
 )
-from sqlalchemy.orm import relationship
 
 from chat.settings import USER_TABLE
 
@@ -83,6 +82,8 @@ message_status = Table(
         'id', Integer, Sequence('chat_messagestatus_id_seq'), primary_key=True,
     ),
     Column('is_read', Boolean, default=False),
+    Column('is_delete_for_me', Boolean, default=False),
+    Column('is_delete_for_all', Boolean, default=False),
     Column('created_at', DateTime, default=datetime.datetime.now),
     Column('message_id', Integer, ForeignKey('message.id', ondelete='CASCADE')),
     Column('user_id', Integer, ForeignKey('user.id', ondelete='CASCADE')),

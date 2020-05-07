@@ -8,8 +8,17 @@ from chat import (
 )
 
 
-async def send_message(conn, wss, chat, user, msg_data):
+async def send_message(conn, ws_current, wss, chat, user, msg_data):
     if msg_data['kind'] == 'file':
+        if await services.can_use_file(conn, msg_data['fileId']):
+            await ws_current.send_json(
+                {
+                    'code': 1001,
+                    'file': 'not exists or already taken',
+                }
+            )
+            return
+
         message = await events.handle_msg_create(
             conn, chat, user, kind='file', file_id=msg_data['fileId'],
         )
@@ -18,7 +27,7 @@ async def send_message(conn, wss, chat, user, msg_data):
             conn, chat, user, kind='text', text=msg_data['text'],
         )
 
-    message_data = serializers.serialize_chat_message(conn, message)
+    message_data = await serializers.serialize_chat_message(conn, message)
     await messages.send_chat_message(
         wss, chatId=chat.id, **message_data,
     )
