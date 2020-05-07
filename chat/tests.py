@@ -5,6 +5,9 @@ from chat.settings import CHAT_CREATE_MESSAGE
 from chat import validators
 
 
+# for run test set database environment variables
+# it's shit i know, but faster
+
 async def test_hi(aiohttp_client):
     app = await web_app()
     client = await aiohttp_client(app)
