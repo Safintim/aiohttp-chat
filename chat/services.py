@@ -108,3 +108,15 @@ async def is_user_chat_participant(conn, _chat, _user):
     participant_user_ids = [participant.user_id for participant in participants]
 
     return _user.id in participant_user_ids
+
+
+async def is_someone_read_message(conn, message):
+    message_status_records = conn.execute(
+        db.message_status.select().
+        where(
+            db.message_status.c.user_id != message.user_id,
+            db.message_status.c.message_id == message.id,
+            is_read == True,
+        )
+    )
+    return await message_status_records.fetchall()
