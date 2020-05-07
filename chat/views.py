@@ -43,7 +43,7 @@ async def handle_chat(request):
             logger.debug(f'chat {chat.id}. user {user.id}. {msg}')
             if msg.type != aiohttp.WSMsgType.TEXT:
                 break
-            msg_data = validators.chat_msg(msg.data)
+            msg_data = validators.validate(msg.data)
             if not msg_data:
                 await ws_current.send_json({'code': 1001})
                 continue
@@ -55,6 +55,12 @@ async def handle_chat(request):
                     chat=chat,
                     user=user,
                     msg_data=msg_data['data'],
+                )
+            elif events.is_user_typing_event(msg_data['event']):
+                await logics.user_typing(
+                    wss=wss,
+                    ws_current=ws_current,
+                    user=user,
                 )
 
     delete_ws_from_channel(ws_current, channel_name, websockets_channels)

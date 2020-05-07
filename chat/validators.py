@@ -5,7 +5,7 @@ import fastjsonschema
 from chat import settings
 
 
-scheme_chat_msg = fastjsonschema.compile({
+scheme_validate_create_msg = fastjsonschema.compile({
     'type': 'object',
     'properties': {
         'event': {
@@ -47,6 +47,19 @@ scheme_chat_msg = fastjsonschema.compile({
     'required': ('event', 'data'),
 })
 
+scheme_validate_user_typing = fastjsonschema.compile({
+    'type': 'object',
+    'properties': {
+        'event': {
+            'type': 'string',
+            'enum': (
+                settings.CHAT_USER_TYPING,
+            ),
+        },
+    },
+    'required': ('event', ),
+})
+
 
 def make_validator(validator):
     def inner(msg):  # noqa WPS430
@@ -61,4 +74,13 @@ def make_validator(validator):
     return inner
 
 
-chat_msg = make_validator(scheme_chat_msg)
+validate_create_msg = make_validator(scheme_validate_create_msg)
+validate_user_typing = make_validator(scheme_validate_user_typing)
+
+
+def validate(data, validators=[validate_create_msg, validate_user_typing]):
+    for validator in validators:
+        validate_data = validator(data)
+        if validate_data:
+            return validate_data
+

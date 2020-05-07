@@ -13,6 +13,14 @@ async def send_chat_message(wss, exclude=None, **kwargs):
     await send_message_for_channel(message, wss, exclude)
 
 
+async def send_user_typing(wss, exclude=None, **kwargs):
+    message = {
+        'event': settings.CHAT_USER_TYPING,
+        'data': kwargs,
+    }
+    await send_message_for_channel(message, wss, exclude)
+
+
 async def send_message_for_channel(message, wss, exclude=None):
     if not exclude:
         exclude = []

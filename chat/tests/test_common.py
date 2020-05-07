@@ -1,8 +1,6 @@
-import json
-
-from chat import events, services, validators, serializers
+from chat import events, services, serializers
 from chat.main import web_app
-from chat.settings import CHAT_CREATE_MESSAGE
+
 
 # for run test set database environment variables
 # it's shit i know, but faster
@@ -29,58 +27,6 @@ async def test_chat_connect(aiohttp_client):
     resp = await client.ws_connect(f'/ws/chats/1?token={fake_token}')
     expected = {'event': 'connect', 'code': 101, 'message': 'hi user_1'}
     assert await resp.receive_json() == expected
-
-
-def test_validate_chat_msg_file():
-    body = {
-        'event': CHAT_CREATE_MESSAGE,
-        'data': {
-            'kind': 'file',
-            'fileId': 1,
-        }
-    }
-
-    json_data = json.dumps(body)
-    assert validators.chat_msg(json_data)
-
-
-def test_validate_chat_msg_text():
-    body = {
-        'event': CHAT_CREATE_MESSAGE,
-        'data': {
-            'kind': 'text',
-            'text': 'Hello',
-        }
-    }
-
-    json_data = json.dumps(body)
-    assert validators.chat_msg(json_data)
-
-
-def test_validate_chat_msg_without_required():
-    body = {
-        'event': CHAT_CREATE_MESSAGE,
-        'data': {
-            'kind': 'text',
-        }
-    }
-
-    json_data = json.dumps(body)
-    assert not validators.chat_msg(json_data)
-
-    body['data']['kind'] = 'file'
-    json_data = json.dumps(body)
-    assert not validators.chat_msg(json_data)
-
-    body['data']['text'] = 'hello'
-    json_data = json.dumps(body)
-    assert not validators.chat_msg(json_data)
-
-    body['data']['kind'] = 'text'
-    body['data']['fileId'] = 1
-    body['data'].pop('text')
-    json_data = json.dumps(body)
-    assert not validators.chat_msg(json_data)
 
 
 async def test_handle_msg_create(aiohttp_client):

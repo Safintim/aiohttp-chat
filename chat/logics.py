@@ -45,3 +45,10 @@ async def send_message(conn, ws_current, wss, chat, user, msg_data):
             chatId=chat.id,
             **message_data,
         )
+
+
+async def user_typing(wss, ws_current, user):
+    user_data = serializers.serialize_user(user)
+    await messages.send_user_typing(
+        wss, exclude=[ws_current], **user_data,
+    )
