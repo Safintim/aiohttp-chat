@@ -13,6 +13,7 @@ from sqlalchemy import (
     Table,
     Text,
 )
+from sqlalchemy.orm import relationship
 
 from chat.settings import USER_TABLE
 
@@ -66,8 +67,10 @@ participant_chat = Table(
 message = Table(
     'chat_message',
     meta,
-    Column('id', Integer, Sequence('app_message_id_seq'), primary_key=True),
+    Column('id', Integer, Sequence('chat_message_id_seq'), primary_key=True),
     Column('text', Text),
+    Column('file_id', Integer),
+    Column('kind', String(4)),
     Column('created_at', DateTime, default=datetime.datetime.now),
     Column('chat_id', Integer, ForeignKey('chat.id', ondelete='CASCADE')),
     Column('user_id', Integer, ForeignKey('user.id', ondelete='CASCADE')),
@@ -77,10 +80,17 @@ message_status = Table(
     'chat_messagestatus',
     meta,
     Column(
-        'id', Integer, Sequence('app_messagestatus_id_seq'), primary_key=True,
+        'id', Integer, Sequence('chat_messagestatus_id_seq'), primary_key=True,
     ),
     Column('is_read', Boolean, default=False),
     Column('created_at', DateTime, default=datetime.datetime.now),
     Column('message_id', Integer, ForeignKey('message.id', ondelete='CASCADE')),
     Column('user_id', Integer, ForeignKey('user.id', ondelete='CASCADE')),
+)
+
+media = Table(
+    'chat_media',
+    meta,
+    Column('id', Integer, Sequence('chat_media_id_seq'), primary_key=True),
+    Column('file', String(100)),
 )

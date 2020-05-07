@@ -34,3 +34,4 @@ NOTIFICATION_TOKEN = os.getenv('NOTIFICATION_TOKEN', 'token')
 NOTIFICATION_URL = os.getenv('NOTIFICATION_URL', 'http://0.0.0.0:8003/notification/')
 
 HEADER_AUTH = os.getenv('HEADER_AUTH', 'false').lower() in {'yes', '1', 'true'}
+HOST = os.getenv('HOST', 'http://127.0.0.1:8000/')

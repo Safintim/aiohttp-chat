@@ -8,9 +8,17 @@ from chat import (
 )
 
 
-async def send_message(conn, wss, chat, user, text):
-    message = await events.handle_msg_create(conn, chat, user, text)
-    message_data = serializers.serialize_chat_message(message)
+async def send_message(conn, wss, chat, user, msg_data):
+    if msg_data['kind'] == 'file':
+        message = await events.handle_msg_create(
+            conn, chat, user, kind='file', file_id=msg_data['fileId'],
+        )
+    else:
+        message = await events.handle_msg_create(
+            conn, chat, user, kind='text', text=msg_data['text'],
+        )
+
+    message_data = serializers.serialize_chat_message(conn, message)
     await messages.send_chat_message(
         wss, chatId=chat.id, **message_data,
     )

@@ -75,7 +75,7 @@ def token_query_auth_middleware(
         if is_exclude(request, exclude_routes) or request.method in exclude_methods:
             return await handler(request)
 
-        token = request.query.get(query_token).strip()
+        token = request.query.get(query_token)
         if not token:
             raise web.HTTPUnauthorized(reason='Missing authorization query')
 

@@ -47,14 +47,13 @@ async def handle_chat(request):
             if not msg_data:
                 await ws_current.send_json({'code': 1001})
                 continue
-            text = msg_data['data']['text']
             if events.is_creation_msg_event(msg_data['event']):
                 await logics.send_message(
                     conn=conn,
                     wss=wss,
                     chat=chat,
                     user=user,
-                    text=text,
+                    msg_data=msg_data['data'],
                 )
 
     delete_ws_from_channel(ws_current, channel_name, websockets_channels)

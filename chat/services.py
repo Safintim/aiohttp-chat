@@ -45,11 +45,25 @@ async def get_user_id_by_token(conn, user_token):
     return await user_records.fetchone()
 
 
-async def create_message(conn, chat_id, user_id, text):
+async def get_file(conn, file_id):
+    file_records = await conn.execute(
+        db.media.select().
+        where(db.media.c.id == file_id),
+    )
+    return await file_records.fetchone()
+
+
+async def create_message(conn, chat_id, user_id, kind, text=None, file_id=None):
     msg_records = await conn.execute(
         db.message.insert().
         returning(*db.message.c).
-        values(chat_id=chat_id, user_id=user_id, text=text),
+        values(
+            chat_id=chat_id,
+            user_id=user_id,
+            kind=kind,
+            text=text,
+            file_id=file_id,
+        ),
     )
     return await msg_records.fetchone()
 

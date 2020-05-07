@@ -17,11 +17,31 @@ scheme_chat_msg = fastjsonschema.compile({
         'data': {
             'type': 'object',
             'properties': {
+                'kind': {
+                    'type': 'string',
+                    'enum': (
+                        'file',
+                        'text',
+                    )
+                },
                 'text': {
                     'type': 'string',
                 },
+                'fileId': {
+                    'type': 'number',
+                }
             },
-            'required': ('text', ),
+            'required': ('kind', ),
+            'if': {
+                'properties': {'kind': {'const': 'file'}},
+            },
+            'then': {
+                'required': ('fileId', ),
+            },
+            'else': {
+                'required': ('text', ),
+            }
+
         },
     },
     'required': ('event', 'data'),
