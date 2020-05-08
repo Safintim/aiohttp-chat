@@ -119,4 +119,5 @@ async def is_someone_read_message(conn, message):
             is_read == True,
         )
     )
-    return await message_status_records.fetchall()
+    records = await message_status_records.fetchall()
+    return bool(records)
