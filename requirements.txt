@@ -1,6 +1,6 @@
 psycopg2==2.8.4
 psycopg2-binary==2.8.4
-aiohttp==3.6.2
+aiohttp==3.7.4
 aiopg==1.0.0
 pytest==5.3.5
 pytest-aiohttp==0.3.0
